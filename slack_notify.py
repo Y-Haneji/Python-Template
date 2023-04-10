@@ -1,6 +1,6 @@
 import requests
 
-api_url = 'https://notify-api.line.me/api/notify'
+api_url = 'https://slack.com/api/chat.postMessage'
 
 def line_notify(message: str, token_path: str):
     """messageをlineに送る
@@ -21,7 +21,9 @@ def line_notify(message: str, token_path: str):
     with open(token_path, 'r') as f:
         token = f.readline().rstrip('\n')
 
-    token_dic = {'Authorization': 'Bearer' + ' ' + token}
-    message_dic = {'message': message}
+    message_dic = {
+        'token': token,
+        'channel': '#cli_notify',
+        'text': message}
 
-    requests.post(api_url, headers=token_dic, data=message_dic)
+    requests.post(api_url, data=message_dic)
